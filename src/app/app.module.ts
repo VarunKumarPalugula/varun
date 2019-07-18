@@ -9,7 +9,28 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  MatSelectModule,
+  MatToolbarModule,
+  MatSidenavModule,
+  MatListModule,
+  MatDividerModule,
+  MatButtonModule,
+  MatCardModule,
+  MatIconModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSnackBarModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatDialogModule,
+  MatRadioModule,
+  MatTabsModule,
+  MatProgressBarModule
+} from '@angular/material';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -17,13 +38,35 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatDividerModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSnackBarModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogModule,
+    MatRadioModule,
+    MatTabsModule,
+    MatProgressBarModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    NativeStorage,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+
 })
 export class AppModule {}

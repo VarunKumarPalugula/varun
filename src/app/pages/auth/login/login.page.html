@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button color="light" (click)="dismissLogin()">Close</ion-button>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <mat-card>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group bg-danger p-2" [hidden]="InvalidUser">
+        <span> Invalid user name or password </span>
+      </div>
+      <div class="form-group">
+        <label for="username">Username <sup class="text-danger">*</sup> </label>
+        <input type="text" formControlName="username" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && input.username.errors }" />
+        <div *ngIf="submitted && input.username.errors" class="invalid-feedback">
+          <div *ngIf="input.username.errors.required">Username is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password">Password <sup class="text-danger">*</sup></label>
+        <input type="password" formControlName="password" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && input.password.errors }" />
+        <div *ngIf="submitted && input.password.errors" class="invalid-feedback">
+          <div *ngIf="input.password.errors.required">Password is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="checkbox" formControlName="remindMe">
+        <span> Remember me</span>
+      </div>
+      <div class="form-group">
+        <ion-button type="submit"  expand="full" color="primary" >Login</ion-button>
+      </div>
+    </form>
+  </mat-card>
+
+
+  <ion-content>
+    <p text-center>Don't have a account?</p>
+    <ion-button expand="full" color="danger" (click)="registerModal()">Register</ion-button>
+  </ion-content>
+
+</ion-content>

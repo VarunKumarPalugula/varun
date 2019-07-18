@@ -1,5 +1,7 @@
 {
   "name": "streetMarket",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
