@@ -12,6 +12,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Push, PushObject, PushOptions } from '@ionic-native/push/ngx';
+
 import {
   MatSelectModule,
   MatToolbarModule,
@@ -63,6 +65,7 @@ import {
   providers: [
     StatusBar,
     SplashScreen,
+    Push,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     NativeStorage,
   ],

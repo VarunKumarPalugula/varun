@@ -21,17 +21,15 @@ import {
   MatTabsModule,
   MatProgressBarModule
 } from '@angular/material';
-import { Push, PushObject, PushOptions } from '@ionic-native/push/ngx';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LoginPage } from './login.page';
-import { RegisterPage } from '../register/register.page';
+import { ForgotPasswordPage } from './forgot-password.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: LoginPage
+    component: ForgotPasswordPage
   }
 ];
 
@@ -60,8 +58,6 @@ const routes: Routes = [
     MatTabsModule,
     MatProgressBarModule
   ],
-  declarations: [LoginPage],
-  providers: [ Push ]
-
+  declarations: [ForgotPasswordPage]
 })
-export class LoginPageModule {}
+export class ForgotPasswordPageModule {}

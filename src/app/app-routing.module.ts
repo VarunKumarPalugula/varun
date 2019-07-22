@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'dashboard', loadChildren: './pages/dashboard/dashboard.module#DashboardPageModule'},
   { path: 'home', loadChildren: './home/home.module#HomePageModule', canActivate: [AuthGuard] },
   { path: 'list', loadChildren: './list/list.module#ListPageModule', canActivate: [AuthGuard] },
+  { path: 'forgot-password', loadChildren: './pages/auth/forgot-password/forgot-password.module#ForgotPasswordPageModule' },
 ];
 
 @NgModule({

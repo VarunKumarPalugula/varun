@@ -12,7 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  loginForm: FormGroup;
+  registorForm: FormGroup;
   submitted = false;
 
   constructor(
@@ -26,36 +26,66 @@ export class RegisterPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loginForm = this.formBuilder.group({
-      username: ['', Validators .required],
-      email: ['', Validators .required],
+    this.registorForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      email: ['', Validators.required],
+      number: ['', Validators.required],
       password: ['', Validators.required]
-     });
+    });
   }
 
   get input(): any {
-    return this.loginForm.controls;
+    return this.registorForm.controls;
   }
 
   onSubmit(): boolean {
     this.submitted = true;
-    if (this.loginForm.invalid) {
+    if (this.registorForm.invalid) {
       return;
     }
-    this.conformRegistor();
+    this.checkUser(this.registorForm);
   }
 
-  async conformRegistor() {
+  checkUser(userDetails) {
+    let userExist = false;
+    this.authService.checkUser().subscribe(allUser => {
+      allUser.forEach(function (user, index) {
+        if (user['number'] === userDetails.value.number) {
+          userExist = true;
+        }
+      });
+      if (userExist) {
+        this.conformRegistor('user allready registored please login');
+      } else {
+        this.register();
+      }
+    },
+      error => {
+        this.alertService.presentToast('Registration Failed please try again after some time!!!');
+      })
+  }
+
+  register() {
+    this.authService.register(this.registorForm.value.username, this.registorForm.value.email, this.registorForm.value.number, this.registorForm.value.password).subscribe((data) => {
+      console.log(data);
+      this.conformRegistor(`User Successfully Registered using this number ${data.number}`);
+    },
+      error => {
+        this.alertService.presentToast('Registration Failed please try again after some time!!!');
+      })
+  }
+
+  async conformRegistor(message) {
     const alert = await this.alertController.create({
-      header: 'User Successfully Registered !!!',
+      header: message,
       subHeader: '',
-      message: 'Please Login with your username or email',
+      message: 'Please Login with your number',
       buttons: [
         {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-           this.dismissRegister();
+            this.dismissRegister();
           }
         },
         {
@@ -71,7 +101,6 @@ export class RegisterPage implements OnInit {
     await alert.present();
   }
 
-
   // Dismiss Register Modal
   dismissRegister() {
     this.modalController.dismiss();
@@ -85,29 +114,4 @@ export class RegisterPage implements OnInit {
     });
     return await loginModal.present();
   }
-
-
-  // register() {
-  //   this.authService.register(form.value.fName, form.value.lName, form.value.email, form.value.password).subscribe(
-  //     data => {
-  //       this.authService.login(form.value.email, form.value.password).subscribe(
-  //         data => {
-  //         },
-  //         error => {
-  //           console.log(error);
-  //         },
-  //         () => {
-  //           this.dismissRegister();
-  //           this.navCtrl.navigateRoot('/dashboard');
-  //         }
-  //       );
-  //       this.alertService.presentToast(data['message']);
-  //     },
-  //     error => {
-  //       console.log(error);
-  //     },
-  //     () => {
-  //     }
-  //   );
-  // }
 }

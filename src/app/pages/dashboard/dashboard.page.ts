@@ -19,12 +19,12 @@ export class DashboardPage implements OnInit {
   ngOnInit() {
   }
 
-  ionViewWillEnter() {
-    this.authService.user().subscribe(
-      user => {
-        this.user = user;
-      }
-    );
-  }
+  // ionViewWillEnter() {
+  //   this.authService.user().subscribe(
+  //     user => {
+  //       this.user = user;
+  //     }
+  //   );
+  // }
 
 }
