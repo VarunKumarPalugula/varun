@@ -8,6 +8,8 @@ import { ModalController, ToastController, NavController, AlertController } from
 import { from } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Push, PushObject, PushOptions } from '@ionic-native/push/ngx';
+// import { NativeStorage } from '@ionic-native/native-storage';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -26,6 +28,7 @@ export class LoginPage implements OnInit {
     private alertService: AlertService,
     private envService: EnvService,
     public alertController: AlertController,
+    // private storage: NativeStorage,
 
   ) { }
 
@@ -54,14 +57,21 @@ export class LoginPage implements OnInit {
     let selctedUser;
     let userExist = false;
     this.authService.checkUser().subscribe(allUser => {
-      allUser.forEach(function (user, index) {
-        selctedUser = user;
-        if (user['number'] === userDetails.value.number) {
+      for (let i = 0; i < allUser.length; i++) {
+        if (allUser[i]['number'] === userDetails.value.number) {
           userExist = true;
+          selctedUser = allUser[i]['password'] ;
+          // this.storage.setItem('username', allUser[i]['username'])
+          // .then(
+          //   () => console.log('Stored item!'),
+          //   error => console.error('Error storing item', error)
+          // );
+          localStorage.setItem('username', allUser[i]['username']);          
+          break;
         }
-      });
+      }
       if (userExist) {
-        if (selctedUser['password'] === userDetails.value.password) {
+        if (selctedUser === userDetails.value.password) {
           this.dismissLogin();
           this.navCtrl.navigateRoot('/dashboard');
         } else {

@@ -25,6 +25,7 @@ import {
 import { IonicModule } from '@ionic/angular';
 
 import { ForgotPasswordPage } from './forgot-password.page';
+import { LoginPage } from '../login/login.page';
 
 const routes: Routes = [
   {
@@ -58,6 +59,9 @@ const routes: Routes = [
     MatTabsModule,
     MatProgressBarModule
   ],
-  declarations: [ForgotPasswordPage]
+  declarations: [ForgotPasswordPage, LoginPage],
+  entryComponents: [LoginPage]
+
+
 })
 export class ForgotPasswordPageModule {}

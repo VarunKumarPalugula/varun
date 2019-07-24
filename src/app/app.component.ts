@@ -44,18 +44,7 @@ export class AppComponent {
 
   logout() {
     this.navCtrl.navigateRoot('/landing');
-
-    // this.authService.logout().subscribe(
-    //   data => {
-    //     this.alertService.presentToast(data['message']);
-    //   },
-    //   error => {
-    //     console.log(error);
-    //   },
-    //   () => {
-    //     this.navCtrl.navigateRoot('/landing');
-    //   }
-    // );
+    localStorage.setItem('username', 'null');          
   }
 
 }

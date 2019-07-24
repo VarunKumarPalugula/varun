@@ -3,7 +3,7 @@ import { ModalController, MenuController, Platform, NavController, ToastControll
 import { RegisterPage } from '../auth/register/register.page';
 import { LoginPage } from '../auth/login/login.page';
 import { AuthService } from 'src/app/services/auth.service';
-import { NativeStorage } from '@ionic-native/native-storage/ngx';
+// import { NativeStorage } from '@ionic-native/native-storage';
 import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class LandingPage implements OnInit {
     private menu: MenuController,
     private authService: AuthService,
     private navCtrl: NavController,
-    private storage: NativeStorage,
+    // private storage: NativeStorage,
     private platform: Platform,
   ) {
     this.menu.enable(false);
@@ -27,11 +27,19 @@ export class LandingPage implements OnInit {
 
 
   ionViewWillEnter() {
-    this.authService.getToken().then(() => {
-      if (this.authService.isLoggedIn) {
-        this.navCtrl.navigateRoot('/dashboard');
-      }
-    });
+    // this.authService.getToken().then(() => {
+    //   if (this.authService.isLoggedIn) {
+    //     this.navCtrl.navigateRoot('/dashboard');
+    //   }
+    // });
+
+    let login = this.authService.getToken().isLoggedIn;
+
+    if (login) {
+      this.navCtrl.navigateRoot('/dashboard');
+    }
+
+
   }
 
   ngOnInit() {

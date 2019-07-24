@@ -58,7 +58,6 @@ const routes: Routes = [
     MatProgressBarModule
   ],
   declarations: [RegisterPage],
-  entryComponents: [],
 
 })
 export class RegisterPageModule {}
