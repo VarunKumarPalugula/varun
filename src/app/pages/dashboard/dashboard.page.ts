@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
-import { User } from 'src/app/models/user';
 import { AuthService } from '../../services/auth.service';
-// import { NativeStorage } from '@ionic-native/native-storage';
+import { ModalController, MenuController, Platform, NavController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,8 +14,7 @@ export class DashboardPage implements OnInit {
   constructor(
     private menu: MenuController,
     private authService: AuthService,
-    // private storage: NativeStorage,
-
+    private navCtrl: NavController,
 
   ) {
     this.menu.enable(true);
@@ -34,8 +31,15 @@ export class DashboardPage implements OnInit {
     //   }
     // )
     if (this.authService.getToken().isLoggedIn) {
-      this.user = this.authService.getToken().data;
+      this.user = (this.authService.getToken().data).charAt(0);;
     }
+    console.log(this.user);
   }
+
+  openProfile() {
+    this.navCtrl.navigateRoot('/profile');
+  }
+
+
 
 }

@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
+import { ProfilePage } from './profile.page';
 import { SharedModule } from '../../shared/shared.module';
-
-
-import { DashboardPage } from './dashboard.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: DashboardPage
+    component: ProfilePage
   }
 ];
 
@@ -17,8 +16,6 @@ const routes: Routes = [
     SharedModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [
-    DashboardPage, 
-  ]
+  declarations: [ProfilePage]
 })
-export class DashboardPageModule {}
+export class ProfilePageModule {}

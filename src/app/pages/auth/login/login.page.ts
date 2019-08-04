@@ -66,7 +66,8 @@ export class LoginPage implements OnInit {
           //   () => console.log('Stored item!'),
           //   error => console.error('Error storing item', error)
           // );
-          localStorage.setItem('username', allUser[i]['username']);          
+          console.log(allUser[i])
+          localStorage.setItem('_id', allUser[i]['_id']);          
           break;
         }
       }

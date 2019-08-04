@@ -3,8 +3,6 @@ import { ModalController, MenuController, Platform, NavController, ToastControll
 import { RegisterPage } from '../auth/register/register.page';
 import { LoginPage } from '../auth/login/login.page';
 import { AuthService } from 'src/app/services/auth.service';
-// import { NativeStorage } from '@ionic-native/native-storage';
-import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'app-landing',
@@ -18,8 +16,6 @@ export class LandingPage implements OnInit {
     private menu: MenuController,
     private authService: AuthService,
     private navCtrl: NavController,
-    // private storage: NativeStorage,
-    private platform: Platform,
   ) {
     this.menu.enable(false);
   }

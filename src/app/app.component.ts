@@ -44,7 +44,7 @@ export class AppComponent {
 
   logout() {
     this.navCtrl.navigateRoot('/landing');
-    localStorage.setItem('username', 'null');          
+    localStorage.setItem('_id', 'null');          
   }
 
 }

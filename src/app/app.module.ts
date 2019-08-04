@@ -1,72 +1,38 @@
 import { NgModule } from '@angular/core';
+import { SharedModule } from './shared/shared.module';
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { RouteReuseStrategy } from '@angular/router';
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Push, PushObject, PushOptions } from '@ionic-native/push/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { NativeStorage } from '@ionic-native/native-storage';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Push, PushObject, PushOptions } from '@ionic-native/push/ngx';
-
-import {
-  MatSelectModule,
-  MatToolbarModule,
-  MatSidenavModule,
-  MatListModule,
-  MatDividerModule,
-  MatButtonModule,
-  MatCardModule,
-  MatIconModule,
-  MatTableModule,
-  MatPaginatorModule,
-  MatSnackBarModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatDialogModule,
-  MatRadioModule,
-  MatTabsModule,
-  MatProgressBarModule
-} from '@angular/material';
+import { ProfileComponent } from './pages/dashboard/profile/profile.component';
+import { ItemListComponent } from './pages/dashboard/item-list/item-list.component';
 @NgModule({
-  declarations: [AppComponent],
   imports: [
+    SharedModule,
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatListModule,
-    MatDividerModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSnackBarModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDialogModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatProgressBarModule
   ],
+  declarations: [AppComponent, ProfileComponent,
+    ItemListComponent],
   providers: [
     StatusBar,
     SplashScreen,
     Push,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    // NativeStorage,
   ],
   bootstrap: [AppComponent],
   entryComponents: []

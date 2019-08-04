@@ -26,14 +26,13 @@ app.get('/', function (req, res, next) {
 });
 
 /* GET SINGLE user BY ID */
-app.get('/getAllUser', function (req, res, next) {
+app.get('/getUser/:id', function (req, res, next) {
+  console.log('res')
   userSchema.findById(req.params.id, function (err, post) {
     if (err) return next(err);
     res.json(post);
   });
 });
-
-
 
 /* SAVE user */
 app.post('/register', function (req, res, next) {

@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { User } from '../models/user';
 import { ToastController } from '@ionic/angular';
 import { Observable } from 'rxjs';
+import { identifierModuleUrl } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +54,15 @@ export class AuthService {
       )
   }
 
+  findById(id: string): Observable<any> {
+    return this.http.get(`${this.serverPort}/getUser/${id}`)
+      .pipe(
+        map(res => {
+          return res;
+        })
+      )
+  }
+
   getToken() {
     // return this.storage.getItem('token').then(data => {
     //     this.token = data;
@@ -69,7 +79,9 @@ export class AuthService {
     //   }
     // );
 
-    let data = localStorage.getItem('username')
+    let data = localStorage.getItem('_id')
+    console.log(data)
+
     if (data !== 'null') {
       this.isLoggedIn = true;
     } else {

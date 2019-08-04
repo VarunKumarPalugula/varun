@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guard/auth.guard';
+import { ProfileComponent } from './pages/dashboard/profile/profile.component';
+import { ItemListComponent } from './pages/dashboard/item-list/item-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'landing', pathMatch: 'full' },
@@ -11,6 +13,8 @@ const routes: Routes = [
   { path: 'home', loadChildren: './home/home.module#HomePageModule', canActivate: [AuthGuard] },
   { path: 'list', loadChildren: './list/list.module#ListPageModule', canActivate: [AuthGuard] },
   { path: 'forgot-password', loadChildren: './pages/auth/forgot-password/forgot-password.module#ForgotPasswordPageModule' },
+  { path: 'profile', component: ProfileComponent },
+  { path: 'itemlist', component: ItemListComponent }
 ];
 
 @NgModule({
