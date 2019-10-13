@@ -1,35 +1,18 @@
 import { Component } from '@angular/core';
-import { AuthService } from './services/auth.service';
-import { Platform, NavController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { AlertService } from './services/alert.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html'
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.scss']
 })
 export class AppComponent {
-  public appPages = [
-    {
-      title: 'Home',
-      url: '/home',
-      icon: 'home'
-    },
-    {
-      title: 'List',
-      url: '/list',
-      icon: 'list'
-    }
-  ];
-
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
-    private authService: AuthService,
-    private alertService: AlertService,
-    private navCtrl: NavController,
+    private statusBar: StatusBar
   ) {
     this.initializeApp();
   }
@@ -37,14 +20,7 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
-      // this.splashScreen.hide();
-      this.authService.getToken();
+      this.splashScreen.hide();
     });
   }
-
-  logout() {
-    this.navCtrl.navigateRoot('/landing');
-    localStorage.setItem('_id', 'null');          
-  }
-
 }

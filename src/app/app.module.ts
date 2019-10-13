@@ -1,42 +1,48 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from './shared/shared.module';
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { RouteReuseStrategy } from '@angular/router';
-
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Push, PushObject, PushOptions } from '@ionic-native/push/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-// import { NativeStorage } from '@ionic-native/native-storage';
-import { HttpClientModule } from '@angular/common/http';
-import { ProfileComponent } from './pages/dashboard/profile/profile.component';
-import { ItemListComponent } from './pages/dashboard/item-list/item-list.component';
+import { LandingComponent } from './index';
+import { LoginPage, RegisterPage } from './pages/auth/index';
+import { SharedModule } from './shared/shared.module'
+import { IonicStorageModule } from '@ionic/storage';
+import { File } from '@ionic-native/file/ngx';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { FileUploadModule } from "ng2-file-upload";
+import { CloudinaryModule, CloudinaryConfiguration } from '@cloudinary/angular-5.x';
+import { Cloudinary } from 'cloudinary-core';
+
 @NgModule({
+  declarations: [AppComponent, LandingComponent, LoginPage, RegisterPage],
   imports: [
     SharedModule,
     BrowserModule,
-    IonicModule.forRoot(),
-    AppRoutingModule,
+    FileUploadModule,
+    CloudinaryModule.forRoot({ Cloudinary }, { cloud_name: 'ddnqswqbt' } as CloudinaryConfiguration),
     BrowserAnimationsModule,
-    HttpClientModule,
+    IonicModule.forRoot(),
+    IonicStorageModule.forRoot(),
+    AppRoutingModule,
   ],
-  declarations: [AppComponent, ProfileComponent,
-    ItemListComponent],
   providers: [
     StatusBar,
     SplashScreen,
-    Push,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    FileTransfer,
+    FileTransferObject,
+    File,
+    Camera,
   ],
   bootstrap: [AppComponent],
-  entryComponents: []
-
+  entryComponents: [LoginPage, RegisterPage]
 
 })
-export class AppModule {}
+export class AppModule { }

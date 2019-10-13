@@ -1,0 +1,58 @@
+<ion-content fullscreen class="m-1" *ngIf="shopDetails">
+  <img class="rounded w-100 h-25" alt="" [src]="shopDetails.shopImage == null ? '../../assets/profile.png' : shopDetails.shopImage">
+  <ion-card-header class="pl-2">
+    <ion-card-title>{{shopDetails.shopName}}</ion-card-title>
+    <ion-card-subtitle>{{shopDetails.shopType}}</ion-card-subtitle>
+  </ion-card-header>
+  <hr class="m-0">
+  <ion-row class="d-flex justify-content-between">
+    <ion-card-header class="p-2">
+      <ion-card-subtitle>Home Delivery {{shopDetails['homeDelivery'] ? 'avaliable' : 'not avaliable'}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-button size="small" (click)="addItem()">Add Item</ion-button>
+  </ion-row>
+
+  <hr class="m-0">
+
+  <ion-content>
+    <ion-card *ngFor="let item of items">
+      <ion-row>
+        <ion-col size="4">
+          <img class="rounded" [src]="item.itemImage" />
+        </ion-col>
+        <ion-col size="7">
+          <ion-row>
+            <strong>{{item.itemName}}</strong>
+          </ion-row>
+          <ion-row>
+            <strong>{{item.rate}}</strong>
+          </ion-row>
+          <!-- <ion-row>
+            <span class="">{{shops.address1}}</span>
+          </ion-row> -->
+          <ion-row class="mt-1">
+            <span class="small">Item avaliable {{item['itemAvalible'] ? 'avaliable' : 'not avaliable'}}</span>
+          </ion-row>
+          <ion-row>
+            <span>{{item.notes}}</span>
+          </ion-row>
+        </ion-col>
+        <ion-col size="1">
+          <ion-icon name="create" (click)="addItem(item)"></ion-icon>
+        </ion-col>
+        <ion-col size="1">
+            <ion-icon name="add" (click)="addToCard(item)"></ion-icon>
+          </ion-col>
+      </ion-row>
+    </ion-card>
+  </ion-content>
+
+</ion-content>
+
+
+
+<ion-footer [hidden]="enableCard">
+  <div>
+      <ion-button color="danger" (click)="pushNotification();">order</ion-button>
+  </div>
+</ion-footer>

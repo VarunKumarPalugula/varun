@@ -1,0 +1,20 @@
+
+::ng-deep .alert-wrapper.sc-ion-alert-md {
+    font-weight: initial !important;
+    border-radius: 13px;
+    & > .alert-head.sc-ion-alert-md {
+        text-align: center !important;
+    }
+    & > .alert-button-group.sc-ion-alert-md {
+        justify-content: space-around !important;
+        border-top: .55px solid rgba(var(--ion-text-color-rgb,0,0,0),.2);
+        padding: 0px;
+        & .alert-button.sc-ion-alert-md {
+            width: 47%;
+            border-left: .55px solid rgba(var(--ion-text-color-rgb,0,0,0),.2);
+            & .alert-button-inner.sc-ion-alert-md {
+                justify-content: center;
+            }
+        }
+    }
+}

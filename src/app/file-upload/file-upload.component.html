@@ -1,0 +1,2 @@
+<img class="rounded" alt="" [src]="uploadedImage == null ? '../../assets/profile.png' : uploadedImage" (click)="fileInput.click()" width="100">          
+<input type="file" id="fileupload" #fileInput ng2FileSelect hidden [uploader]="uploader" (change)="fileInput.value=''" />

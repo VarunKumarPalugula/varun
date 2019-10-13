@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, ToastController, NavController, AlertController } from '@ionic/angular';
 import { LoginPage } from '../login/login.page';
-import { AuthService } from 'src/app/services/auth.service';
-// import { NativeStorage } from '@ionic-native/native-storage';
-import { AlertService } from 'src/app/services/alert.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { ApiService } from '../../../services/api.service';
+import { CommonService } from '../../../services/common.service';
+import { StorageService } from '../../../services/storage.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -14,27 +13,46 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class RegisterPage implements OnInit {
   registorForm: FormGroup;
   submitted = false;
-
+  number: boolean;
+  password: boolean;
+  email: boolean
+  validNumber: any;
   constructor(
     private formBuilder: FormBuilder,
     private modalController: ModalController,
     public alertController: AlertController,
-    private authService: AuthService,
     private toastController: ToastController,
     private navCtrl: NavController,
-    private alertService: AlertService
+    public apiService: ApiService,
+    public commonService: CommonService,
+    public storageService: StorageService
   ) { }
 
   ngOnInit() {
     this.registorForm = this.formBuilder.group({
       username: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [ Validators.required , Validators.email]],
       number: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', [ Validators.required, Validators.minLength(8)]]
     });
   }
 
+  numberValidation() {
+    this.number = true;
+    if (this.registorForm.get('number').value !== null) {
+      if ((this.registorForm.get('number').value).toString().length != 10) {
+        this.validNumber = 'INVALID';
+      } else {
+        this.validNumber = 'VALID';
+        this.number = false;
+      }
+    } else {
+      this.validNumber = 'VALID';
+    }
+  }
+
   get input(): any {
+    console.log(this.registorForm)
     return this.registorForm.controls;
   }
 
@@ -48,31 +66,41 @@ export class RegisterPage implements OnInit {
 
   checkUser(userDetails) {
     let userExist = false;
-    this.authService.checkUser().subscribe(allUser => {
-      allUser.forEach(function (user, index) {
-        if (user['number'] === userDetails.value.number) {
-          userExist = true;
+    this.commonService.presentLoading('registering user...');
+    this.storageService.getItem('type').then((val) => {
+      this.apiService.getAllData(val).subscribe(allUser => {
+        allUser.forEach(function (user, index) {
+          console.log(user);
+          if (user['number'] === userDetails.value.number) {
+            userExist = true;
+          }
+        });
+        if (userExist) {
+          this.conformRegistor('user allready registored please login');
+        } else {
+          this.register();
         }
-      });
-      if (userExist) {
-        this.conformRegistor('user allready registored please login');
-      } else {
-        this.register();
-      }
-    },
-      error => {
-        this.alertService.presentToast('Registration Failed please try again after some time!!!');
-      })
+        this.commonService.dismissLoading();
+      },
+        error => {
+          this.commonService.dismissLoading();
+          this.commonService.presentToast('Registration Failed please try again after some time!!!');
+        })
+    });
   }
 
+
   register() {
-    this.authService.register(this.registorForm.value.username, this.registorForm.value.email, this.registorForm.value.number, this.registorForm.value.password).subscribe((data) => {
-      console.log(data);
-      this.conformRegistor(`User Successfully Registered using this number ${data.number}`);
-    },
-      error => {
-        this.alertService.presentToast('Registration Failed please try again after some time!!!');
-      })
+    this.storageService.getItem('type').then((val) => {
+      this.apiService.saveData(this.registorForm['value'], val).subscribe((data) => {
+        this.commonService.dismissLoading();
+        this.conformRegistor(`User Successfully Registered using this number ${data.number}`);
+      },
+        error => {
+          this.commonService.dismissLoading();
+          this.commonService.presentToast('Registration Failed please try again after some time!!!');
+        });
+    });
   }
 
   async conformRegistor(message) {
@@ -114,4 +142,5 @@ export class RegisterPage implements OnInit {
     });
     return await loginModal.present();
   }
+
 }

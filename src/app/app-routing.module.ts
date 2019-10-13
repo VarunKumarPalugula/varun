@@ -1,26 +1,19 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './guard/auth.guard';
-import { ProfileComponent } from './pages/dashboard/profile/profile.component';
-import { ItemListComponent } from './pages/dashboard/item-list/item-list.component';
+import { LandingComponent } from './index';
 
-const routes: Routes = [
-  { path: '', redirectTo: 'landing', pathMatch: 'full' },
-  { path: 'landing', loadChildren: './pages/landing/landing.module#LandingPageModule' },
+const routes: Routes = [  
+  { path: '', redirectTo: 'landing', pathMatch: 'full' },  
+  { path: 'landing', component: LandingComponent },
   { path: 'login', loadChildren: './pages/auth/login/login.module#LoginPageModule' },
   { path: 'register', loadChildren: './pages/auth/register/register.module#RegisterPageModule' },
-  { path: 'dashboard', loadChildren: './pages/dashboard/dashboard.module#DashboardPageModule'},
-  { path: 'home', loadChildren: './home/home.module#HomePageModule', canActivate: [AuthGuard] },
-  { path: 'list', loadChildren: './list/list.module#ListPageModule', canActivate: [AuthGuard] },
   { path: 'forgot-password', loadChildren: './pages/auth/forgot-password/forgot-password.module#ForgotPasswordPageModule' },
-  { path: 'profile', component: ProfileComponent },
-  { path: 'itemlist', component: ItemListComponent }
+  { path: 'dashboard-tabs', loadChildren: './pages/dashboard-tabs/dashboard-tabs.module#DashboardTabsPageModule' },
 ];
-
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

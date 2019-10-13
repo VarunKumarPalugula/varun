@@ -1,0 +1,95 @@
+<ion-app>
+  <ion-header translucent>
+    <ion-toolbar>
+      <ion-title>Create Account</ion-title>
+    </ion-toolbar>
+    <ion-button (click)="back();">Back</ion-button>
+  </ion-header>
+
+  <ion-content fullscreen>
+    <form [formGroup]="createShop" (ngSubmit)="createShopFunc()">
+      <ion-list lines="full" class="ion-no-margin ion-no-padding">
+
+        <ion-item>
+          <div class="d-flex justify-content-center m-2 w-100">
+            <app-file-upload (emitImage)="getUploadedImage($event);"></app-file-upload>
+          </div>
+        </ion-item>
+
+        <ion-item>
+          <ion-label for="shopName" position="stacked">Shop Name
+            <ion-text color="danger">*</ion-text>
+          </ion-label>
+          <ion-input required formControlName="shopName" type="text"
+            [ngClass]="{ 'ion-invalid': submitted && input.shopName.errors }"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked" for="number">Number
+          </ion-label>
+          <ion-input type="number"  disabled formControlName="number"></ion-input>
+        </ion-item>
+        
+
+        <ion-item>
+          <ion-label position="stacked" for="perferredNumber">Preferred Number
+            <ion-text color="danger">*</ion-text>
+          </ion-label>
+          <ion-input required type="number" formControlName="perferredNumber" (input)="numberValidation()"
+          [ngClass]="{ 'is-invalid': number  }"></ion-input>
+          <div *ngIf="number" class="invalid-feedback">
+            <div *ngIf="createShop.get('perferredNumber').value === null">Number is required</div>
+            <div *ngIf="validNumber !== 'VALID'">Please enter min of 10 charaters</div>
+          </div>
+
+
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked" for="alternativeNumber">Alternative Number
+          </ion-label>
+          <ion-input required type="number" formControlName="alternativeNumber"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked" for="address">Address
+            <ion-text color="danger">*</ion-text>
+          </ion-label>
+          <ion-input placeholder="Address Line 1" formControlName="address1"
+            [ngClass]="{ 'ion-invalid': submitted && input.address1.errors }"></ion-input>
+          <ion-input placeholder="Address Line 2" formControlName="address2"></ion-input>
+          <ion-input placeholder="City" formControlName="city"></ion-input>
+          <ion-input placeholder="State" formControlName="state"
+            [ngClass]="{ 'ion-invalid': submitted && input.state.errors }"></ion-input>
+          <ion-input type="number" placeholder="Zip Code" formControlName="zipCode"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked" for="shopType">Shop Type
+            <ion-text color="danger">*</ion-text>
+          </ion-label>
+          <ion-input required type="text" formControlName="shopType"
+            [ngClass]="{ 'ion-invalid': submitted && input.shopType.errors }"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked" for="notes">Additional Details</ion-label>
+          <ion-textarea formControlName="notes"></ion-textarea>
+        </ion-item>
+
+        <ion-item>
+          <ion-label for="homeDelivery">Home Delivery
+            <ion-text color="danger">*</ion-text>
+          </ion-label>
+          <ion-toggle slot="start" color="Blueberry" unchecked formControlName="homeDelivery"></ion-toggle>
+        </ion-item>
+
+
+      </ion-list>
+
+      <div class="ion-padding">
+        <ion-button expand="block" type="submit" class="ion-no-margin">Create Shop</ion-button>
+      </div>
+    </form>
+  </ion-content>
+</ion-app>

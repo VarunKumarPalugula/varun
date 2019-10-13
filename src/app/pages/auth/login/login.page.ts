@@ -1,15 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { RegisterPage } from '../register/register.page';
-import { NgForm } from '@angular/forms';
-import { AlertService } from 'src/app/services/alert.service';
-import { AuthService } from '../../../services/auth.service';
-import { EnvService } from '../../../services/env.service';
+import { ApiService } from '../../../services/api.service';
+import { CommonService } from '../../../services/common.service';
 import { ModalController, ToastController, NavController, AlertController } from '@ionic/angular';
-import { from } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Push, PushObject, PushOptions } from '@ionic-native/push/ngx';
-// import { NativeStorage } from '@ionic-native/native-storage';
-
+import { StorageService } from '../../../services/storage.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -18,31 +13,42 @@ import { Push, PushObject, PushOptions } from '@ionic-native/push/ngx';
 export class LoginPage implements OnInit {
   loginForm: FormGroup;
   submitted = false;
-
+  number: any;
+  validNumber: any;
+  password = false;
   constructor(
-    private push: Push,
     private formBuilder: FormBuilder,
     private modalController: ModalController,
-    private authService: AuthService,
     private navCtrl: NavController,
-    private alertService: AlertService,
-    private envService: EnvService,
     public alertController: AlertController,
-    // private storage: NativeStorage,
-
+    public apiService: ApiService,
+    public commonService: CommonService,
+    public storageService: StorageService,
   ) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      number: ['', Validators.required],
-      password: ['', Validators.required],
-      remindMe: null
+      number: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(8)]]
     });
-
   }
 
   get input(): any {
     return this.loginForm.controls;
+  }
+
+  numberValidation() {
+    this.number = true;
+    if (this.loginForm.get('number').value !== null) {
+      if ((this.loginForm.get('number').value).toString().length != 10) {
+        this.validNumber = 'INVALID';
+      } else {
+        this.validNumber = 'VALID';
+        this.number = false;
+      }
+    } else {
+      this.validNumber = 'VALID';
+    }
   }
 
   onSubmit(): boolean {
@@ -56,37 +62,37 @@ export class LoginPage implements OnInit {
   checkUser(userDetails) {
     let selctedUser;
     let userExist = false;
-    this.authService.checkUser().subscribe(allUser => {
-      for (let i = 0; i < allUser.length; i++) {
-        if (allUser[i]['number'] === userDetails.value.number) {
-          userExist = true;
-          selctedUser = allUser[i]['password'] ;
-          // this.storage.setItem('username', allUser[i]['username'])
-          // .then(
-          //   () => console.log('Stored item!'),
-          //   error => console.error('Error storing item', error)
-          // );
-          console.log(allUser[i])
-          localStorage.setItem('_id', allUser[i]['_id']);          
-          break;
+    this.commonService.presentLoading('User login...');
+    this.storageService.getItem('type').then((val) => {
+      this.apiService.getAllData(val).subscribe(allUser => {
+        for (let i = 0; i < allUser.length; i++) {
+          if (allUser[i]['number'] === userDetails.value.number) {
+            userExist = true;
+            selctedUser = allUser[i]['password'];
+            this.storageService.addItem('userDetails', JSON.stringify(allUser[i]));
+            break;
+          }
         }
-      }
-      if (userExist) {
-        if (selctedUser === userDetails.value.password) {
-          this.dismissLogin();
-          this.navCtrl.navigateRoot('/dashboard');
+        if (userExist) {
+          if (selctedUser === userDetails.value.password) {
+            this.dismissLogin();
+            this.navCtrl.navigateRoot('/dashboard-tabs/dashboard');
+          } else {
+            this.commonService.presentToast('Invalid password');
+          }
         } else {
-          this.alertService.presentToast('Invalid password');        
+          this.conformationRegistor('User is not registered Please registor first');
         }
-      } else {
-        this.conformationRegistor('User is not registered Please registor first');
-      }
-    },
-      error => {
-        this.alertService.presentToast('Registration Failed please try again after some time!!!');
-      })
-  }
+        this.commonService.dismissLoading();
+      },
+        error => {
+          this.commonService.dismissLoading();
+          this.commonService.presentToast('Registration Failed please try again after some time!!!');
+        })
+    });
 
+
+  }
 
   async conformationRegistor(message) {
     const alert = await this.alertController.create({
@@ -120,8 +126,6 @@ export class LoginPage implements OnInit {
   }
 
 
-
-
   // On Register button tap, dismiss login modal and open register modal
   async registerModal() {
     this.dismissLogin();
@@ -130,4 +134,7 @@ export class LoginPage implements OnInit {
     });
     return await registerModal.present();
   }
+
+
+
 }
