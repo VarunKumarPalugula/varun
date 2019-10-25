@@ -58,5 +58,6 @@ export class CommonService {
   async dismissLoading() {
     return await this.loadingController.dismiss();
   }
+  
 
 }

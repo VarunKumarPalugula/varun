@@ -39,7 +39,7 @@ import { Cloudinary } from 'cloudinary-core';
     FileTransfer,
     FileTransferObject,
     File,
-    Camera,
+    Camera
   ],
   bootstrap: [AppComponent],
   entryComponents: [LoginPage, RegisterPage]

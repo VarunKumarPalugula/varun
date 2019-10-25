@@ -1,5 +1,5 @@
 .img--class {
-    padding: 22% 34% 0% 34%;
+    padding: 34% 34% 3% 34%;
 }
 
 .d--flex {
@@ -7,6 +7,27 @@
 }
 
 ion-content{
-    --ion-background-color:rgba(63,81,105,1);
+    --background: linear-gradient(197deg, rgba(63,81,105,1) 0%, rgba(59,77,101,1) 23%, rgba(59,77,101,1) 48%, rgba(38,52,79,1) 71%, rgba(32,45,70,1) 100%) !important;
+
+}
+.tt {
+    background: li;
+}
+ion-item {
+    box-shadow: 1px 1px 10px #888888;
+    --background: linear-gradient(197deg, rgba(63,81,105,1) 0%, rgba(59,77,101,1) 23%, rgba(59,77,101,1) 48%, rgba(38,52,79,1) 71%, rgba(32,45,70,1) 100%) !important;
+  }
+
+.text--white {
+    color: #9fa6b2;
 }
 
+ion-button {
+    box-shadow: 1px 1px 10px #888888;
+    --background: linear-gradient(197deg, rgba(63,189,175,1) 0%, rgba(63,189,175,1) 23%, rgba(35,184,191,1) 48%, rgba(19,183,202,1) 71%, rgba(2,180,208,1) 100%) !important;
+}
+
+ion-icon {
+    font-size: 30px;
+    padding: 10px 0px;
+}

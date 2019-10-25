@@ -1,42 +1,37 @@
-<ion-content >
+<ion-content>
 
   <div class="d--flex flex-column align-items-center">
-    <img class="img--class" src="../../../../assets/shop.png">
-    <div> SHOPPING </div>
+    <img class="img--class" height="300px" width="400px" src="../../../../assets/shop.png">
   </div>
 
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="p-4">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="p-4 pt-5">
 
-    <div class="form-group">
-      <ion-item color="medium" no-padding>
-        <ion-icon color="secondary" name="apps" class="pr-2"></ion-icon>
-        <ion-input required  placeholder="Number" type="number" formControlName="number" (input)="numberValidation()"
-          [ngClass]="{ 'is-invalid': number  }"></ion-input>
-        <div *ngIf="number" class="invalid-feedback">
-          <div *ngIf="loginForm.get('number').value === null">Number is required</div>
-          <div *ngIf="validNumber !== 'VALID'">Please enter min of 10 charaters</div>
-        </div>
-      </ion-item>
+    <div class="d-flex">
+      <ion-icon name="apps" class="text--white"></ion-icon>
+      <ion-input class="text-white" required placeholder="Number" type="number" [attr.maxlength]="4"
+        formControlName="number" (keyup)="numberValidation()" [ngClass]="{ 'is-invalid': number  }"></ion-input>
+      <div *ngIf="number" class="invalid-feedback">
+        <div *ngIf="loginForm.get('number').value == null">Number is required</div>
+        <div *ngIf="validNumber !== 'VALID'">Please enter min of 10 charaters</div>
+      </div>
     </div>
 
-    <div class="form-group">
-      <ion-item color="medium" no-padding>
-        <ion-icon class="text-secondary" name="lock" class="pr-2"></ion-icon>
-        <ion-input class="text-secondary" type="password"  placeholder="Password" formControlName="password" (blur)="password = true"
-          [ngClass]="{ 'is-invalid': password && input.password.errors }"></ion-input>
-        <div *ngIf="password && input.password.errors" class="invalid-feedback">
-          <div *ngIf="loginForm.get('password').hasError('required')">New password is required</div>
-          <div *ngIf="loginForm.get('password').hasError('minlength')">Please enter min of 8 charaters</div>
-        </div>
-      </ion-item>
+    <div class="d-flex">
+      <ion-icon name="lock" class="text--white"></ion-icon>
+      <ion-input class="text-white" type="password" placeholder="Password" formControlName="password"
+        (blur)="password = true" [ngClass]="{ 'is-invalid': password && input.password.errors }"></ion-input>
+      <div *ngIf="password && input.password.errors" class="invalid-feedback">
+        <div *ngIf="loginForm.get('password').hasError('required')">New password is required</div>
+        <div *ngIf="loginForm.get('password').hasError('minlength')">Please enter min of 8 charaters</div>
+      </div>
     </div>
 
-    <div class="form-group pt-2">
-      <ion-button type="submit" expand="block" color="primary">Log in</ion-button>
+    <div class="form-group pt-2 r">
+      <ion-button type="submit" expand="block" [disabled]="isLoginDisable" class="text-white button">Log in</ion-button>
     </div>
 
     <div class="form-group text-center" (click)="dismissLogin()">
-      <a class="text-secondary" [routerLink]="['/forgot-password']">Forgot password?</a>
+      <a class="text--white" [routerLink]="['/forgot-password']">Forgot password?</a>
     </div>
 
   </form>

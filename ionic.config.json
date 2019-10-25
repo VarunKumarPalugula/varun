@@ -1,7 +1,8 @@
 {
   "name": "digitalshopping",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {}
   },
   "type": "angular"
 }
