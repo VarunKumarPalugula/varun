@@ -15,11 +15,10 @@ import { StorageService } from '../../../services/storage.service';
 export class ForgotPasswordPage implements OnInit {
 
   forgotPassword: FormGroup;
-  submitted = false;
-  number: any;
   validNumber: any;
   newPassword: boolean;
   verifyPassword: boolean;
+  loggedInType: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,7 +28,11 @@ export class ForgotPasswordPage implements OnInit {
     public apiService: ApiService,
     public commonService: CommonService,
     public storageService: StorageService
-  ) { }
+  ) {
+    this.storageService.getItem('type').then((val) => {
+      this.loggedInType = val;
+    });
+   }
 
   ngOnInit() {
     this.forgotPassword = this.formBuilder.group({
@@ -39,52 +42,35 @@ export class ForgotPasswordPage implements OnInit {
     });
   }
 
+  numberValidation() {
+    this.validNumber = this.commonService.numberValid(this.forgotPassword.get('number').value);
+  }
+
   onSubmit() {
-    console.log(this.forgotPassword)
-    this.submitted = true;
-    if (this.forgotPassword.invalid) {
+   
+
+     if (this.forgotPassword.invalid  || this.validNumber == 'INVALID') {
+      this.commonService.presentToast('Please check your login details');
+      return;
+    } else if (this.forgotPassword.get('newPassword').value !== this.forgotPassword.get('verifyPassword').value) {
+      this.commonService.presentToast(`password mismatch`);
       return;
     }
+     
     this.checkUser(this.forgotPassword);
-    if (this.forgotPassword.get('newPassword').value !== this.forgotPassword.get('verifyPassword').value) {
-      this.forgotPassword.controls.verifyPassword.setErrors({ passwordMismatch: true });
-    }
+
   }
 
-  numberValidation() {
-    this.number = true;
-    if (this.forgotPassword.get('number').value !== null) {
-      if ((this.forgotPassword.get('number').value).toString().length != 10) {
-        this.validNumber = 'INVALID';
-      } else {
-        this.validNumber = 'VALID';
-        this.number = false;
-      }
-    } else {
-      this.validNumber = 'VALID';
-    }
-  }
 
   checkUser(userDetails) {
-    let userExist = false;
-    let _id;
     this.commonService.presentLoading('registering user...');
-    this.storageService.getItem('type').then((val) => {
-      this.apiService.getAllData(val).subscribe(allUser => {
-        for (let i = 0; i < allUser.length; i++) {
-          if (allUser[i]['number'] === userDetails.value.number) {
-            userExist = true;
-            _id = allUser[i]['_id']
-            break;
-          }
-        }
-
-        if (userExist) {
-          this.storageService.getItem('type').then((val) => {
-            this.apiService.updateData(val, _id, { 'password': userDetails.value.verifyPassword }).subscribe(res => {
+    this.apiService.find( { number: this.forgotPassword.get('number').value }, this.loggedInType).subscribe(res => {
+      // this.apiService.getAllData(this.loggedInType).subscribe(allUser => {
+      //   allUser = allUser.filter(user => (user['number'] === userDetails.value.number))
+        if (res) {
+            this.apiService.updateData(this.loggedInType, res[0]['_id'], { 'password': userDetails.value.verifyPassword }).subscribe(res => {
               this.login('Password Sussfully changed!!!');
             });
-          });
         } else {
           this.commonService.presentToast(`Invalied phone number!!!`);
         }
@@ -94,12 +80,9 @@ export class ForgotPasswordPage implements OnInit {
           this.commonService.dismissLoading();
           this.commonService.presentToast(`Registration Failed please try again after some time!!!`);
         })
-    });
   }
 
-  get input(): any {
-    return this.forgotPassword.controls;
-  }
+
 
   async login(message) {
     const alert = await this.alertController.create({

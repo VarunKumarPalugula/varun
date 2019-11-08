@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { CommonService } from '../../../services/common.service';
 import { ModalController, MenuController, Platform, NavController, ToastController, AlertController } from '@ionic/angular';
+import { StorageService } from '../../../services/storage.service';
 
 
 @Component({
@@ -18,14 +19,16 @@ export class ProfilePage implements OnInit {
     private apiService: ApiService,
     private commonService: CommonService,
     private modalController: ModalController,
+    public storageService: StorageService,
+    private navCtrl: NavController,
 
   ) { }
 
   ngOnInit() {
-    this.commonService.getToken().then(res => {
-      this.shopDetails = JSON.parse(res['data']);
-      console.log(this.shopDetails);
-    })
+    // this.commonService.getToken().then(res => {
+    //   this.shopDetails = JSON.parse(res['data']);
+    //   console.log(this.shopDetails);
+    // })
   }
 
   updateDetails() {
@@ -41,6 +44,12 @@ export class ProfilePage implements OnInit {
   ionViewWillEnter() {
 
 
+  }
+
+
+  logout() {
+    this.storageService.addItem('userDetails', null);
+    this.navCtrl.navigateRoot('/landing');
   }
 
   getUploadedImage(image) {

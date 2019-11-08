@@ -1,52 +1,37 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Register</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="mobile-backgroundShade--color">
 
-<ion-content>
-  <ion-card class="p-3">
-    <form [formGroup]="registorForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="username">User Name <sup class="text-danger">*</sup> </label>
-        <input type="text" formControlName="username" class="form-control"
-          [ngClass]="{ 'is-invalid': submitted && input.username.errors }" />
-        <div *ngIf="submitted && input.username.errors" class="invalid-feedback">
-          <div *ngIf="input.username.errors.required">Username is required</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="email">Email ID <sup class="text-danger">*</sup></label>
-        <input type="email" formControlName="email" class="form-control" (blur)="email = true"
-          [ngClass]="{ 'is-invalid': email && input.email.errors }" />
-        <div *ngIf="email && input.email.errors" class="invalid-feedback">
-          <div *ngIf="input.email.errors.required">email is required</div>
-          <div *ngIf="input.email.errors.email">Email must be a valid email address</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="number">Phone Number <sup class="text-danger">*</sup></label>
-        <input type="number" formControlName="number" class="form-control" (input)="numberValidation()"
-          [ngClass]="{ 'is-invalid': number  }" />
-        <div *ngIf="number" class="invalid-feedback">
-          <div *ngIf="registorForm.get('number').value === null">Number is required</div>
-          <div *ngIf="validNumber !== 'VALID'">Please enter min of 10 charaters</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="password">Password <sup class="text-danger">*</sup></label>
-        <input type="password" formControlName="password" class="form-control" (blur)="password = true"
-          [ngClass]="{ 'is-invalid': password && input.password.errors }" />
-          <div *ngIf="password && input.password.errors" class="invalid-feedback">
-            <div *ngIf="registorForm.get('password').hasError('required')">password is required</div>
-            <div *ngIf="registorForm.get('password').hasError('minlength')">Please enter min of 8 charaters</div>
-          </div>
-      </div>
-      <div class="form-group">
-        <ion-button type="submit" expand="full" color="danger">Register</ion-button>
-      </div>
+  <div class="img--class">
+    <ion-img src="/assets/shopping.png"></ion-img>
+  </div>
 
-    </form>
-  </ion-card>
+  <form [formGroup]="registorForm" (ngSubmit)="onSubmit()" class="p-4 pt-5">
+
+    <div class="d-flex border-bottom">
+      <ion-icon name="contact" class="text-white ion-icon"></ion-icon>
+      <ion-input class="text-white" placeholder="Username" type="text" formControlName="username"></ion-input>
+    </div>
+
+
+    <div class="d-flex border-bottom">
+      <ion-icon name="mail" class="text-white ion-icon"></ion-icon>
+      <ion-input class="text-white" placeholder="Email" type="email" formControlName="email"></ion-input>
+    </div>
+
+    <div class="d-flex border-bottom">
+      <ion-icon name="apps" class="text-white ion-icon"></ion-icon>
+      <ion-input class="text-white" placeholder="Number" type="number" formControlName="number" (change)="numberValidation()"></ion-input>
+    </div>
+
+    <div class="d-flex border-bottom">
+      <ion-icon name="lock" class="text-white ion-icon"></ion-icon>
+      <ion-input class="text-white" type="password" placeholder="Password" formControlName="password"></ion-input>
+    </div>
+
+
+    <div class="form-group pt-2">
+      <ion-button type="submit" expand="block" class="text-white m-4 p-1">Register</ion-button>
+    </div>
+
+  </form>
 
 </ion-content>

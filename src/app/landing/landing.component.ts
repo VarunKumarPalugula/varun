@@ -21,12 +21,13 @@ export class LandingComponent implements OnInit {
   ) { }
 
   ionViewWillEnter() {
-    if (!isNullOrUndefined(this.commonService.getToken())) {
-      // this.navCtrl.navigateRoot('/dashboard');
-      this.confirmType();
-    } else {
-      this.confirmType();
-    }
+    this.commonService.getToken().then(res => {
+      if (res) {
+        this.confirmType();
+      } else {
+        this.navCtrl.navigateRoot('/dashboard-tabs');
+      }
+    })
   }
 
   ngOnInit() { }

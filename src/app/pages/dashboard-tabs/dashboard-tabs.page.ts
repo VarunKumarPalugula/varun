@@ -17,14 +17,14 @@ export class DashboardTabsPage implements OnInit {
   }
 
   ngOnInit() {
-    this.commonService.getToken().then(res => {
-      let loggedInUser = JSON.parse(res['data']);
-      this.apiService.find({ number: loggedInUser['number'] }, 'shopDetails').subscribe(res => {
-        if (res.length > 0) {
-          this.isDisableShop = true;
-        }
-      });
-    });
+    // this.commonService.getToken().then(res => {
+    //   let loggedInUser = JSON.parse(res['data']);
+    //   this.apiService.find({ number: loggedInUser['number'] }, 'shopDetails').subscribe(res => {
+    //     if (res.length > 0) {
+    //       this.isDisableShop = true;
+    //     }
+    //   });
+    // });
   }
 
 

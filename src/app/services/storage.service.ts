@@ -18,6 +18,9 @@ export class StorageService {
     return this.storage.get(key)
   }
 
+  removeItem(key: string): Promise<any> {
+    return this.storage.remove(key)
+  }
 
   // addItem(item: Item): Promise<any> {
   //   return this.storage.get(Items_key).then((items: Item[]) => {

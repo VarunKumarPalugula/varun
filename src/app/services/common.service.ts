@@ -3,6 +3,7 @@ import { StorageService } from './storage.service';
 
 import { ToastController, LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { isNullOrUndefined } from 'util';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,6 @@ import { Storage } from '@ionic/storage';
 
 export class CommonService {
 
-  isLoggedIn = false;
-  token: any;
   constructor(
     private storageService: StorageService,
     private toastController: ToastController,
@@ -20,17 +19,14 @@ export class CommonService {
   ) { }
 
   getToken() {
-    return this.storageService.getItem('userDetails').then((val) => {
-      if (val !== 'null') {
-        this.isLoggedIn = true;
+    let isLoggedIn;
+   return this.storageService.getItem('userDetails').then((val) => {
+      if (isNullOrUndefined(val)) {
+        isLoggedIn = true;
       } else {
-        this.isLoggedIn = false;
+        isLoggedIn = false;
       }
-      let final = {
-        'data': val,
-        'isLoggedIn': this.isLoggedIn
-      }
-      return final;
+      return isLoggedIn;
     });
   }
 
@@ -59,5 +55,21 @@ export class CommonService {
     return await this.loadingController.dismiss();
   }
   
+  numberValid(number) {
+    let validNumber;
+    if (number !== null) {
+      if (number.toString().length <= 10) {
+        if (number.toString().length != 10) {
+          validNumber = 'INVALID';
+        } else {
+          validNumber = 'VALID';
+        }
+      } else {
+        validNumber = 'INVALID';
+        event.preventDefault();
+      }
+    }
+    return validNumber;
+  }
 
 }

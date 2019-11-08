@@ -11,13 +11,11 @@ import { StorageService } from '../../../services/storage.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+
   loginForm: FormGroup;
-  submitted = false;
-  number: any;
   validNumber: any;
-  password = false;
-  isLoginDisable = true;
-  
+  loggedInType: string;
+
   constructor(
     private formBuilder: FormBuilder,
     private modalController: ModalController,
@@ -26,7 +24,11 @@ export class LoginPage implements OnInit {
     public apiService: ApiService,
     public commonService: CommonService,
     public storageService: StorageService,
-  ) { }
+  ) {
+    this.storageService.getItem('type').then((val) => {
+      this.loggedInType = val;
+    });
+   }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -35,106 +37,86 @@ export class LoginPage implements OnInit {
     });
   }
 
-  get input(): any {
-    return this.loginForm.controls;
-  }
+ 
 
   numberValidation() {
-    this.number = true;
-    if ((this.loginForm.get('number').value).toString().length < 10) {
-      if ((this.loginForm.get('number').value).toString().length != 10) {
-        this.validNumber = 'INVALID';
-      } else {
-        this.validNumber = 'VALID';
-        this.number = false;
-      }
-    } else {
-      event.preventDefault();
-    }
-  console.log(this.loginForm.get('number').value);
-}
-
-onSubmit(): boolean {
-  this.submitted = true;
-  if (this.loginForm.invalid) {
-    return;
+    this.validNumber = this.commonService.numberValid(this.loginForm.get('number').value);
   }
-  this.checkUser(this.loginForm);
-}
 
-checkUser(userDetails) {
-  let selctedUser;
-  let userExist = false;
-  this.commonService.presentLoading('User login...');
-  this.storageService.getItem('type').then((val) => {
-    this.apiService.getAllData(val).subscribe(allUser => {
-      for (let i = 0; i < allUser.length; i++) {
-        if (allUser[i]['number'] === userDetails.value.number) {
-          userExist = true;
-          selctedUser = allUser[i]['password'];
-          this.storageService.addItem('userDetails', JSON.stringify(allUser[i]));
-          break;
-        }
-      }
-      if (userExist) {
-        if (selctedUser === userDetails.value.password) {
-          this.dismissLogin();
-          this.navCtrl.navigateRoot('/dashboard-tabs/dashboard');
+  onSubmit(): boolean {
+    if (this.loginForm.invalid || this.validNumber == 'INVALID') {
+      this.commonService.presentToast('Please check your login details');
+      return;
+    }
+    this.checkUser(this.loginForm);
+  }
+
+  checkUser(userDetails) {
+    this.commonService.presentLoading('User login...');
+      // this.apiService.getAllData(this.loggedInType).subscribe(allUser => {
+        this.apiService.find( { number: this.loginForm.get('number').value }, this.loggedInType).subscribe(res => {
+        // allUser = allUser.filter(user => (user['number'] === userDetails.value.number))
+        if (res.length !== 0) {
+          if (res[0]['password'] === userDetails.value.password) {
+            this.dismissLogin();
+            this.commonService.dismissLoading();
+            this.storageService.addItem('userDetails', JSON.stringify(res));
+            this.navCtrl.navigateRoot('/dashboard-tabs/dashboard');
+          } else {
+            this.commonService.dismissLoading();
+            this.commonService.presentToast('Invalid password');
+          }
         } else {
-          this.commonService.presentToast('Invalid password');
+          this.conformationRegistor('User is not registered Please registor first');
         }
-      } else {
-        this.conformationRegistor('User is not registered Please registor first');
-      }
-      this.commonService.dismissLoading();
-    },
-      error => {
         this.commonService.dismissLoading();
-        this.commonService.presentToast('Registration Failed please try again after some time!!!');
-      })
-  });
-}
-
-async conformationRegistor(message) {
-  const alert = await this.alertController.create({
-    header: message,
-    subHeader: '',
-    message: '',
-    buttons: [
-      {
-        text: 'Cancel',
-        role: 'cancel',
-        handler: () => {
-          this.dismissLogin();
-        }
       },
-      {
-        text: 'Register',
-        role: 'Register',
-        handler: () => {
-          this.registerModal();
-        }
-      },
-    ]
-  });
+        error => {
+          this.commonService.dismissLoading();
+          this.commonService.presentToast('Registration Failed please try again after some time!!!');
+        })
+  }
 
-  await alert.present();
-}
+  async conformationRegistor(message) {
+    const alert = await this.alertController.create({
+      header: message,
+      subHeader: '',
+      message: '',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            this.dismissLogin();
+          }
+        },
+        {
+          text: 'Register',
+          role: 'Register',
+          handler: () => {
+            this.registerModal();
+          }
+        },
+      ]
+    });
 
-// Dismiss Login Modal
-dismissLogin() {
-  this.modalController.dismiss();
-}
+    await alert.present();
+  }
+
+  // Dismiss Login Modal
+  dismissLogin() {
+    this.modalController.dismiss();
+  }
 
 
-// On Register button tap, dismiss login modal and open register modal
-async registerModal() {
-  this.dismissLogin();
-  const registerModal = await this.modalController.create({
-    component: RegisterPage
-  });
-  return await registerModal.present();
-}
+  // On Register button tap, dismiss login modal and open register modal
+  async registerModal() {
+    this.dismissLogin();
+    const registerModal = await this.modalController.create({
+      component: RegisterPage
+    });
+    return await registerModal.present();
+  }
 
 
 

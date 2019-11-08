@@ -1,25 +1,27 @@
-<ion-content>
-  <div >
-    <ion-img src="/assets/background_image.jpg"></ion-img>
+<ion-content class="mobile-background--color">
+  <div>
+    <ion-img src="/assets/background_image.png"></ion-img>
     <ion-card-header>
-      <ion-card-subtitle>Shopping</ion-card-subtitle>
-      <ion-card-title>HAPPY SHOPPING !!!</ion-card-title>
+      <ion-card-subtitle class="text-white">Shopping</ion-card-subtitle>
+      <ion-card-title class="text-white">HAPPY SHOPPING !!!</ion-card-title>
     </ion-card-header>
-    <ion-card-content>
+    <ion-card-content class="text-white">
       <p>Shop whatever you want here with the best price garented.</p>
     </ion-card-content>
   </div>
+
+
 </ion-content>
 
-<ion-footer>
-  <ion-toolbar>
-      <ion-row>
-        <ion-col>
-          <ion-button color="primary" expand="full" color="primary" (click)="login()">Login</ion-button>
-        </ion-col>
-        <ion-col>
-          <ion-button color="primary" expand="full" color="danger" (click)="register()">Register</ion-button>
-        </ion-col>
-      </ion-row>
+<ion-footer class="position-static">
+  <ion-toolbar class="mobile-background--color">
+    <ion-row>
+      <ion-col>
+        <ion-button color="primary" expand="full" color="primary" (click)="login()">Login</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button color="primary" expand="full" color="danger" (click)="register()">Register</ion-button>
+      </ion-col>
+    </ion-row>
   </ion-toolbar>
 </ion-footer>

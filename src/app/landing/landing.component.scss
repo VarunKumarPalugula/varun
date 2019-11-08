@@ -4,6 +4,9 @@
     border-radius: 13px;
     & > .alert-head.sc-ion-alert-md {
         text-align: center !important;
+        & h2 {
+            color: rgb(53, 77, 109);
+        }
     }
     & > .alert-button-group.sc-ion-alert-md {
         justify-content: space-around !important;
@@ -14,6 +17,7 @@
             border-left: .55px solid rgba(var(--ion-text-color-rgb,0,0,0),.2);
             & .alert-button-inner.sc-ion-alert-md {
                 justify-content: center;
+                color: black;
             }
         }
     }
