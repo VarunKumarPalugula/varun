@@ -18,7 +18,6 @@ export class ForgotPasswordPage implements OnInit {
   validNumber: any;
   newPassword: boolean;
   verifyPassword: boolean;
-  loggedInType: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,9 +28,6 @@ export class ForgotPasswordPage implements OnInit {
     public commonService: CommonService,
     public storageService: StorageService
   ) {
-    this.storageService.getItem('type').then((val) => {
-      this.loggedInType = val;
-    });
    }
 
   ngOnInit() {
@@ -64,11 +60,11 @@ export class ForgotPasswordPage implements OnInit {
 
   checkUser(userDetails) {
     this.commonService.presentLoading('registering user...');
-    this.apiService.find( { number: this.forgotPassword.get('number').value }, this.loggedInType).subscribe(res => {
+    this.apiService.find( { number: this.forgotPassword.get('number').value }, 'user').subscribe(res => {
       // this.apiService.getAllData(this.loggedInType).subscribe(allUser => {
       //   allUser = allUser.filter(user => (user['number'] === userDetails.value.number))
         if (res) {
-            this.apiService.updateData(this.loggedInType, res[0]['_id'], { 'password': userDetails.value.verifyPassword }).subscribe(res => {
+            this.apiService.updateData('user', res[0]['_id'], { 'password': userDetails.value.verifyPassword }).subscribe(res => {
               this.login('Password Sussfully changed!!!');
             });
         } else {

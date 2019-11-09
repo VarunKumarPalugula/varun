@@ -23,41 +23,15 @@ export class LandingComponent implements OnInit {
   ionViewWillEnter() {
     this.commonService.getToken().then(res => {
       if (res) {
-        this.confirmType();
+        
       } else {
-        this.navCtrl.navigateRoot('/dashboard-tabs');
+        this.navCtrl.navigateRoot('/dashboard');
       }
     })
   }
 
   ngOnInit() { }
 
-  async confirmType() {
-    const alert = await this.alertController.create({
-      header: '',
-      subHeader: 'Before Using Over Application please confirm( Owner or Customer)',
-      message: '',
-      backdropDismiss: false,
-      buttons: [
-        {
-          text: 'OWNER',
-          role: 'OWNER',
-          handler: () => {
-            this.storageService.addItem('type', 'owner');
-          }
-        },
-        {
-          text: 'CUSTOMER',
-          role: 'CUSTOMER',
-          handler: () => {
-            this.storageService.addItem('type', 'customer');
-          }
-        },
-      ]
-    });
-
-    await alert.present();
-  }
 
   async register() {
     const registerModal = await this.modalController.create({

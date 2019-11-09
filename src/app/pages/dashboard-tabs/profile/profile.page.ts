@@ -48,8 +48,10 @@ export class ProfilePage implements OnInit {
 
 
   logout() {
-    this.storageService.addItem('userDetails', null);
-    this.navCtrl.navigateRoot('/landing');
+    // this.apiService.updateData('user', res[0]['_id'], { 'loggedIn': false }).subscribe(res => {
+    //   this.storageService.addItem('userDetails', null);
+    //   this.navCtrl.navigateRoot('/landing');
+    // });
   }
 
   getUploadedImage(image) {

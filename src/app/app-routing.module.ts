@@ -18,7 +18,8 @@ const routes: Routes = [
   { path: 'login', loadChildren: './pages/auth/login/login.module#LoginPageModule' },
   { path: 'register', loadChildren: './pages/auth/register/register.module#RegisterPageModule'  },
   { path: 'forgot-password', loadChildren: './pages/auth/forgot-password/forgot-password.module#ForgotPasswordPageModule'  },
-  { path: 'dashboard-tabs', loadChildren: './pages/dashboard-tabs/dashboard-tabs.module#DashboardTabsPageModule' },
+  { path: 'dashboard', loadChildren: './pages/dashboard/dashboard.module#DashboardPageModule' },
+
 ];
 
 @NgModule({

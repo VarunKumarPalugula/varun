@@ -6,12 +6,17 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { DashboardPage } from './dashboard.page';
+import { ChatORcallComponent } from './chat-orcall/chat-orcall.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: DashboardPage
-  }
+    component: DashboardPage,
+  },
+  {
+    path: 'chatORcall',
+    component: ChatORcallComponent
+  },
 ];
 
 @NgModule({
@@ -21,6 +26,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [DashboardPage]
+  declarations: [DashboardPage, ChatORcallComponent]
 })
 export class DashboardPageModule {}

@@ -14,7 +14,6 @@ export class LoginPage implements OnInit {
 
   loginForm: FormGroup;
   validNumber: any;
-  loggedInType: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -25,9 +24,6 @@ export class LoginPage implements OnInit {
     public commonService: CommonService,
     public storageService: StorageService,
   ) {
-    this.storageService.getItem('type').then((val) => {
-      this.loggedInType = val;
-    });
    }
 
   ngOnInit() {
@@ -53,22 +49,28 @@ export class LoginPage implements OnInit {
 
   checkUser(userDetails) {
     this.commonService.presentLoading('User login...');
-      // this.apiService.getAllData(this.loggedInType).subscribe(allUser => {
-        this.apiService.find( { number: this.loginForm.get('number').value }, this.loggedInType).subscribe(res => {
-        // allUser = allUser.filter(user => (user['number'] === userDetails.value.number))
+        this.apiService.find( { number: this.loginForm.get('number').value }, 'user').subscribe(res => {
+
         if (res.length !== 0) {
+
           if (res[0]['password'] === userDetails.value.password) {
+
+            this.apiService.updateData('user', res[0]['_id'], { 'loggedIn': true }).subscribe(res => {
             this.dismissLogin();
             this.commonService.dismissLoading();
             this.storageService.addItem('userDetails', JSON.stringify(res));
-            this.navCtrl.navigateRoot('/dashboard-tabs/dashboard');
+            this.navCtrl.navigateRoot('/dashboard');
+            });
+            
           } else {
             this.commonService.dismissLoading();
             this.commonService.presentToast('Invalid password');
           }
+          
         } else {
           this.conformationRegistor('User is not registered Please registor first');
         }
+
         this.commonService.dismissLoading();
       },
         error => {

@@ -7,8 +7,8 @@ import { tap, map, catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ApiService {
-  serverPort = 'https://shopping-nodejs.herokuapp.com';
-  // serverPort = 'http://localhot:3000';
+  // serverPort = 'https://shopping-nodejs.herokuapp.com';
+  serverPort = 'http://localhost:3000';
 
   constructor(
     private http: HttpClient,

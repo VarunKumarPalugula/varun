@@ -13,7 +13,6 @@ export class RegisterPage implements OnInit {
 
   registorForm: FormGroup;
   validNumber: any;
-  loggedInType: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -24,10 +23,7 @@ export class RegisterPage implements OnInit {
     public apiService: ApiService,
     public commonService: CommonService,
     public storageService: StorageService
-  ) { 
-    this.storageService.getItem('type').then((val) => {
-      this.loggedInType = val;
-    });
+  ) {
   }
 
   ngOnInit() {
@@ -53,9 +49,7 @@ export class RegisterPage implements OnInit {
 
   checkUser(userDetails) {
     this.commonService.presentLoading('registering user...');
-      // this.apiService.getAllData(this.loggedInType).subscribe(allUser => {
-        this.apiService.find( { number: this.registorForm.get('number').value }, this.loggedInType).subscribe(res => {
-          // allUser = allUser.filter(user => (user['number'] === userDetails.value.number))
+        this.apiService.find( { number: this.registorForm.get('number').value }, 'user').subscribe(res => {
         if (res.length === 0) {
           this.register();
         } else {
@@ -72,7 +66,7 @@ export class RegisterPage implements OnInit {
 
 
   register() {
-      this.apiService.saveData(this.registorForm['value'], this.loggedInType).subscribe((data) => {
+      this.apiService.saveData(this.registorForm['value'], 'user').subscribe((data) => {
         this.commonService.dismissLoading();
         this.commonService.presentToast(`User Successfully Registered using this number ${data.number}`);
         this.dismissRegister();

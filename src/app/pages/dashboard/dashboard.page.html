@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Topics</ion-title>
+    <ion-icon slot="end" class="d-flex ion-icon" name="power" (click)="logout()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="mobile-backgroundShade--color">
+  <ion-card class="bg-light" [routerLink]="['./chatORcall']" (click)="openCallORchat(t)" *ngFor="let t of topics">
+    <ion-card-header>
+      <ion-card-title >{{t.topic}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{t.discription}}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

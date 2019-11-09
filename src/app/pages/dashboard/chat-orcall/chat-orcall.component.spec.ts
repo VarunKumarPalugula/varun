@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DashboardTabsPage } from './dashboard-tabs.page';
+import { ChatORcallComponent } from './chat-orcall.component';
 
-describe('DashboardTabsPage', () => {
-  let component: DashboardTabsPage;
-  let fixture: ComponentFixture<DashboardTabsPage>;
+describe('ChatORcallComponent', () => {
+  let component: ChatORcallComponent;
+  let fixture: ComponentFixture<ChatORcallComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DashboardTabsPage ],
+      declarations: [ ChatORcallComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DashboardTabsPage);
+    fixture = TestBed.createComponent(ChatORcallComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
