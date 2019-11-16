@@ -61,8 +61,7 @@ export class ForgotPasswordPage implements OnInit {
   checkUser(userDetails) {
     this.commonService.presentLoading('registering user...');
     this.apiService.find( { number: this.forgotPassword.get('number').value }, 'user').subscribe(res => {
-      // this.apiService.getAllData(this.loggedInType).subscribe(allUser => {
-      //   allUser = allUser.filter(user => (user['number'] === userDetails.value.number))
+
         if (res) {
             this.apiService.updateData('user', res[0]['_id'], { 'password': userDetails.value.verifyPassword }).subscribe(res => {
               this.login('Password Sussfully changed!!!');

@@ -3,6 +3,8 @@ import { ApiService } from '../../services/api.service';
 import { ModalController, Platform, NavController, ToastController, AlertController } from '@ionic/angular';
 import { CommonService } from '../../services/common.service';
 import { StorageService } from '../../services/storage.service';
+import { isNullOrUndefined } from 'util';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
@@ -11,7 +13,9 @@ import { StorageService } from '../../services/storage.service';
 export class DashboardPage implements OnInit {
 
   loggedInUser: any;
-  topics: any;
+  topics = [];
+  item: any;
+
   constructor(
     private apiService: ApiService,
     private navCtrl: NavController,
@@ -21,31 +25,53 @@ export class DashboardPage implements OnInit {
     public storageService: StorageService,
 
   ) {
-    this.apiService.getAllData('topics').subscribe(res => {
-      console.log(res)
-      this.topics = res;
-    })
+
   }
 
   ngOnInit() {
     this.storageService.getItem('userDetails').then(res => {
       this.loggedInUser = JSON.parse(res);
+      this.apiService.getAllData('topics').subscribe(result => {
+        for (let t = 0; t < result.length; t++) {
+          for (let u = 0; u < this.loggedInUser.topic.length; u++) {
+            if (result[t]['topic'] == this.loggedInUser.topic[u]) {
+              this.topics.push(result[t]);
+            }
+          }
+        }
+      });
     });
+  }
 
+  openGroupList() {
+    this.navCtrl.navigateRoot('/dashboard/group-list');
   }
 
   ionViewWillEnter() {
-
-
   }
 
-  openCallORchat(topic) {
+  openContactList(i) {
+    if (isNullOrUndefined(this.item)) {
+      this.item = i;
+    } else {
+      if (i == this.item) {
+        this.item = null;
+      } else {
+        this.item = i
+      }
+    }
+  }
+
+  openTopics(topic) {
+    console.log(topic)
     this.commonService.presentLoading('User login...');
     this.apiService.updateData('user', this.loggedInUser['_id'], { 'topic': topic['topic'] }).subscribe(res => {
       this.storageService.addItem('topic', topic['topic'])
       this.commonService.dismissLoading();
     });
   }
+
+
 
   logout() {
     this.commonService.presentLoading('please wait...');
@@ -56,9 +82,5 @@ export class DashboardPage implements OnInit {
     });
   }
 
-  // Dismiss Login Modal
-  dismissLogin() {
-    this.modalController.dismiss();
-  }
 
 }

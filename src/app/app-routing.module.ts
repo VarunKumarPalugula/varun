@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { LandingComponent } from './index';
+import { LandingComponent, FqaComponent } from './index';
 import { AuthService } from './auth.service';
 
 // const routes: Routes = [  
@@ -15,6 +15,7 @@ import { AuthService } from './auth.service';
 const routes: Routes = [  
   { path: '', redirectTo: 'landing', pathMatch: 'full' },  
   { path: 'landing', component: LandingComponent  },
+  { path: 'fqa', component: FqaComponent  },
   { path: 'login', loadChildren: './pages/auth/login/login.module#LoginPageModule' },
   { path: 'register', loadChildren: './pages/auth/register/register.module#RegisterPageModule'  },
   { path: 'forgot-password', loadChildren: './pages/auth/forgot-password/forgot-password.module#ForgotPasswordPageModule'  },

@@ -13,6 +13,7 @@ export class RegisterPage implements OnInit {
 
   registorForm: FormGroup;
   validNumber: any;
+  topics: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -24,6 +25,10 @@ export class RegisterPage implements OnInit {
     public commonService: CommonService,
     public storageService: StorageService
   ) {
+    this.apiService.getAllData('topics').subscribe(res => {
+      console.log(res)
+      this.topics = res;
+    })
   }
 
   ngOnInit() {
@@ -31,8 +36,14 @@ export class RegisterPage implements OnInit {
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       number: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      topic: ['']
     });
+  }
+
+  topicCheck(i) {
+    this.topics[i]['checked'] = !this.topics[i]['checked'];
+      
   }
 
   numberValidation() {
@@ -44,39 +55,67 @@ export class RegisterPage implements OnInit {
       this.commonService.presentToast('Please check your login details');
       return;
     }
-    this.checkUser(this.registorForm);
+    this.checkUser();
   }
 
-  checkUser(userDetails) {
-    this.commonService.presentLoading('registering user...');
-        this.apiService.find( { number: this.registorForm.get('number').value }, 'user').subscribe(res => {
-        if (res.length === 0) {
-          this.register();
-        } else {
-          this.commonService.dismissLoading();
-          this.commonService.presentToast('user allready registored please login');
-        }
-      },
-        error => {
-          this.commonService.dismissLoading();
-          this.commonService.presentToast('Registration Failed please try again after some time!!!');
-        })
+  checkUser() {
+    let topic = []
+    this.topics.filter((item) => {
+      if(item.checked)
+      topic.push(item.topic)
+    }); 
+    this.registorForm.patchValue({
+      topic: topic, 
+    });
+
+    this.commonService.presentLoading('User login...');
+    this.apiService.find({ number: this.registorForm.get('number').value }, 'user').subscribe(res => {
+      if (res.length === 0) {
+        this.register();
+      } else {
+        this.commonService.dismissLoading();
+        this.commonService.presentToast('user allready registored please login');
+      }
+    },
+      error => {
+        this.commonService.dismissLoading();
+        this.commonService.presentToast('Registration Failed please try again after some time!!!');
+      })
 
   }
 
 
   register() {
-      this.apiService.saveData(this.registorForm['value'], 'user').subscribe((data) => {
-        this.commonService.dismissLoading();
-        this.commonService.presentToast(`User Successfully Registered using this number ${data.number}`);
-        this.dismissRegister();
-      }, error => {
+    var registerId;
+    this.apiService.saveData(this.registorForm['value'], 'user').subscribe((res) => {
+      registerId = res;
+      this.apiService.ccAddUser(this.registorForm.get('number').value, this.registorForm.get('username').value).subscribe(res => {
+        let ccData = JSON.parse(res);
+        if (ccData.error) {
+
+          this.apiService.deleteUser('user', registerId['_id']).subscribe(res => {
+
+            this.commonService.presentToast('Registration Failed please try again after some time!!!');
+
+          });
+
+        } else {
           this.commonService.dismissLoading();
-          this.commonService.presentToast('Registration Failed please try again after some time!!!');
-        });
+          this.commonService.presentToast(`User Successfully Registered using this number ${this.registorForm.get('number').value}`);
+          this.dismissRegister();
+        }
+      }, error => {
+        this.commonService.dismissLoading();
+        this.commonService.presentToast('Registration Failed please try again after some time!!!');
+      });
+
+    }, error => {
+      this.commonService.dismissLoading();
+      this.commonService.presentToast('Registration Failed please try again after some time!!!');
+    });
   }
 
- 
+
 
   // Dismiss Register Modal
   dismissRegister() {

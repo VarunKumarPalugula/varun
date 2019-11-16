@@ -7,6 +7,12 @@ import { IonicModule } from '@ionic/angular';
 
 import { DashboardPage } from './dashboard.page';
 import { ChatORcallComponent } from './chat-orcall/chat-orcall.component';
+import { ChatComponent } from './chat/chat.component';
+import { CallComponent } from './call/call.component';
+import { OutgoingCallComponent } from './outgoing-call/outgoing-call.component';
+import { IncomingCallComponent } from './incoming-call/incoming-call.component';
+import { OngoingCallComponent } from './ongoing-call/ongoing-call.component';
+import { GroupViewComponent } from './group-view/group-view.component';
 
 const routes: Routes = [
   {
@@ -17,6 +23,22 @@ const routes: Routes = [
     path: 'chatORcall',
     component: ChatORcallComponent
   },
+  {
+    path: 'chat',
+    component: ChatComponent
+  },
+  {
+    path: 'call',
+    component: CallComponent
+  },
+  {
+    path: 'group-list',
+    component: GroupViewComponent
+  },
+  {
+    path: 'ongoing-cal',
+    component: OngoingCallComponent
+  },
 ];
 
 @NgModule({
@@ -26,6 +48,9 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [DashboardPage, ChatORcallComponent]
+  declarations: [DashboardPage, GroupViewComponent, ChatORcallComponent, ChatComponent,
+     CallComponent, OutgoingCallComponent, IncomingCallComponent , OngoingCallComponent],
+  entryComponents: [ChatComponent],
+  providers: []
 })
-export class DashboardPageModule {}
+export class DashboardPageModule { }

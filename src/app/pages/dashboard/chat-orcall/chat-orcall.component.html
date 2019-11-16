@@ -1,24 +1,42 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Call Or Chat</ion-title>
-    <ion-icon slot="start" class="d-flex ion-icon" name="arrow-back" (click)="back()"></ion-icon>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content class="mobile-backgroundShade--color">
-  <!-- <ion-card >
-      <ion-img src="/assets/call.jpg"></ion-img>
-  </ion-card>
-  <ion-card  >
-      <ion-img src="/assets/chat.jpg"></ion-img>
-  </ion-card> -->
-  <ion-card *ngFor="let c of contacts">
-          <ion-item>
-            <ion-label>{{c.username | uppercase }}</ion-label>
-            <ion-icon class="pr-2" name="call"></ion-icon>
-            <ion-icon class="pl-2" name="chatbubbles"></ion-icon>
-          </ion-item>
-          
-  </ion-card>
-
-</ion-content>
+  <ion-list class="overflow-auto user--height">
+    <div *ngFor="let user of userListArray">
+      <div *ngIf="user">
+        <ion-row >
+          <ion-col col-12 col-md-6 col-lg-4>
+            <ion-item class="user" (click)="tappedOnItems($event, user)">
+              <ion-row class="w-100">
+                <ion-col style="max-width: max-content">
+                  <img src="{{user.avatar || 'https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100&ssl=1' }}" style="width: 42px; height: 42px; border-radius: 50%; ">
+                </ion-col>
+                <ion-col style="width: max-content">
+                  <ion-row>
+                      <span>
+                        {{user.name}}
+                      </span>
+                      <span *ngIf="user.blockedByMe" style="color: red; line-height: 22px; font-size: 14px; font-weight: bold;">
+                        blocked
+                      </span>
+                  </ion-row>
+                  <ion-row>
+                    <span style="line-height: 22px; font-size: 14px; color: #9E9E9E;">
+                      {{user.status}}
+                    </span>
+                  </ion-row>
+                </ion-col>
+                <ion-col style="max-width: 24px; padding: 0px; margin-left: 10%;">
+                  <span *ngIf="user.unreadCount > 0" style="border-radius: 50%;width: 24px;height: 24px;padding-top: 6px;background-color: red;color: #fff;text-align: center;font-size: 12px; display: flex; justify-content: center; margin-top: 6px; position:absolute; right: 0px;">
+                    {{user.unreadCount}}
+                  </span>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+    <ion-item lines="none" (click)="loadNextUsers($event)" class="loadButton">
+      <button style="margin: auto; background: white; border: 1px solid gray; padding: 5px;">
+        Load More User
+      </button>
+    </ion-item>
+  </ion-list>

@@ -9,24 +9,19 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { LandingComponent } from './index';
+import { LandingComponent, FqaComponent } from './index';
 import { LoginPage, RegisterPage } from './pages/auth/index';
 import { SharedModule } from './shared/shared.module'
 import { IonicStorageModule } from '@ionic/storage';
-import { File } from '@ionic-native/file/ngx';
-import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { FileUploadModule } from "ng2-file-upload";
-import { CloudinaryModule, CloudinaryConfiguration } from '@cloudinary/angular-5.x';
-import { Cloudinary } from 'cloudinary-core';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+
+
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, LoginPage, RegisterPage],
+  declarations: [AppComponent, LandingComponent, LoginPage, RegisterPage, FqaComponent],
   imports: [
     SharedModule,
     BrowserModule,
-    FileUploadModule,
-    CloudinaryModule.forRoot({ Cloudinary }, { cloud_name: 'ddnqswqbt' } as CloudinaryConfiguration),
     BrowserAnimationsModule,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
@@ -36,10 +31,7 @@ import { Cloudinary } from 'cloudinary-core';
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    FileTransfer,
-    FileTransferObject,
-    File,
-    Camera
+    AndroidPermissions
   ],
   bootstrap: [AppComponent],
   entryComponents: [LoginPage, RegisterPage]

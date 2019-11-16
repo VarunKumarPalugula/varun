@@ -1,0 +1,71 @@
+<ion-header>
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+		<ion-title>
+			<span>{{currentData.name}}</span>
+		</ion-title>
+		<div slot="end">
+			<ion-icon class="text-white ion-icon p-1" name="camera"></ion-icon>
+			<ion-icon class="text-white ion-icon p-1" name="call" (click)="voiceCall()"></ion-icon>
+			<ion-icon class="text-white ion-icon p-1" name="settings"></ion-icon>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+
+<app-outgoing-call *ngIf="outgoingCall$ | async as outgoingCall" [call]="outgoingCall"></app-outgoing-call>
+<app-incoming-call *ngIf="incomingCall$ | async as incomingCall" [call]="incomingCall"></app-incoming-call>
+<app-ongoing-call *ngIf="ongoingCall$ | async as ongoingCall" [call]="ongoingCall"></app-ongoing-call>
+<div id="callScreen"></div>
+
+<ion-content padding #content [scrollEvents]="true" (ionScrollStart)="logScrollStart()"
+	(ionScroll)="logScrolling($event)" (ionScrollEnd)="logScrollEnd()">
+	<ion-list>
+		<div *ngFor="let message of userMessages">
+			<div class="chat" *ngIf="message !== undefined">
+				<span [class]="message.sender.uid === currentData.uid ? 'message me' : 'message you'"
+					*ngIf="message.type == 'text'">
+					{{message.text}}
+				</span>
+
+				<span [class]="message.sender.uid === currentData.uid ? 'message meMedia' : 'message youMedia'"
+					*ngIf="message.type == 'image'">
+					<img src={{message.data.url}} style="height: 150px; width: 150px;">
+				</span>
+
+				<span [class]="message.sender.uid === currentData.uid ? 'message meMedia' : 'message youMedia'"
+					*ngIf="message.type == 'video'">
+					<video width="150px" height="150px" preload="auto" controls>
+						<source src={{message.data.url}}>
+					</video>
+				</span>
+
+				<span [class]="message.sender.uid === currentData.uid ? 'message me' : 'message you'"
+					*ngIf="message.type == 'file'">
+					{{message.sender.name}} has sent you a file, you can download it<span
+						style="font-weight: bold; font-style: italic;"> here.</span>
+				</span>
+
+				<span class="imgSpan">
+					<img src="{{(message.deliveredAt > 0) ? (message.readAt > 0) ? ('../assets/readAt.png') : ('../assets/deliveredAt.png') : (message.readAt) ? ('../assets/readAt.png') : 'https://2.bp.blogspot.com/-XItmlQeH_-4/Vj9iojIcOHI/AAAAAAAA-f8/mU7SLoGV8Lk/s320/Single%2BTick%2BCheck%2BMark%2BPHOTO.jpg'}}"
+						[class]="message.sender.uid === currentData.uid ? 'hideTicks' : 'showTicks'"
+						style="width: 11px; height: 11px; margin-bottom: -5px;">
+				</span>
+			</div>
+		</div>
+	</ion-list>
+</ion-content>
+
+
+<ion-footer class="position-static">
+	<ion-toolbar>
+		<ion-col class="d-flex">
+			<ion-input class="boader-0" placeholder="Type Your Message Here.." type="text" [(ngModel)]="messageText"
+				(ionBlur)="checkBlur()" (ionFocus)="checkFocus()" (ionInput)="checkInput()"></ion-input>
+			<ion-icon class="text-muted ion-icon p-1" name="send" (click)='sendMessage()'></ion-icon>
+
+		</ion-col>
+	</ion-toolbar>
+</ion-footer>

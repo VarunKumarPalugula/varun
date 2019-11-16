@@ -27,20 +27,18 @@
 
 
 .mobile-background--color {
-    --background: rgb(53, 77, 109);
+    --background: rgba(63,81,105,1) !important;
 }
 
-.mobile-backgroundShade--color {
-    --background: linear-gradient(197deg, rgba(63,81,105,1) 0%, rgba(59,77,101,1) 23%, rgba(59,77,101,1) 48%, rgba(38,52,79,1) 71%, rgba(32,45,70,1) 100%) !important;
-}
+
 
 ion-button {
-    --background: linear-gradient(197deg, rgba(63,81,105,1) 0%, rgba(59,77,101,1) 23%, rgba(59,77,101,1) 48%, rgba(38,52,79,1) 71%, rgba(32,45,70,1) 100%) !important;
+    --background: rgba(63,81,105,1) !important;
 }
 
 .ion-icon {
     font-size: 30px;
-    padding: 10px 0px;
+    padding: 15px 0px;
 }
 
 .img--class {

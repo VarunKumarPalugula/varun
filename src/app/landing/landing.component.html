@@ -1,29 +1,41 @@
-<ion-content class="mobile-background--color">
-  <div>
-    <ion-img src="/assets/background_image.jpg"></ion-img>
-    <ion-card-header>
-      <ion-card-title class="text-white">Talk To Me</ion-card-title>
-      <ion-card-subtitle class="text-white">Talking without judgement</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content class="text-white">
-      <p>Should be a Talk (phone) functionality as well as a Text functionality
-        Should be a log in/share bar for social media
-        Also on the log in you should be able to see who all is available so you can select and talk to. This is not a dating profile. There are no pictures.</p>
-    </ion-card-content>
-  </div>
+<ion-content fullscreen class="mobile-background--color">
+      <div>
+            <ion-img src="/assets/talk-to-me.png" style="height: 200px;"></ion-img>
+            <ion-card-header>
+                  <ion-card-title class="text-white">Talking without </ion-card-title>
+                  <ion-card-title class="text-white">Fear of being Judged</ion-card-title>
+            </ion-card-header>
+      </div>
 
+      <ion-col class="text-white">
 
+            <section class="d-flex mt-5">
+                  <ion-button type="submit" class="p-1" (click)="login()"> Log in </ion-button>
+                  <ion-button type="submit" class="p-1" (click)="register()"> Sign up </ion-button>
+            </section>
+
+            <ion-row class="d-flex justify-content-around p-4">
+                  <ion-col class="text-center">
+                        <ion-icon class="text-white ion-icon " name="logo-facebook"></ion-icon>
+
+                  </ion-col>
+                  <ion-col class="text-center">
+                        <ion-icon class="text-white ion-icon " name="logo-instagram"></ion-icon>
+
+                  </ion-col>
+                  <ion-col class="text-center">
+                        <ion-icon class="text-white ion-icon " name="logo-twitter"></ion-icon>
+
+                  </ion-col>
+                  <ion-col class="text-center">
+                        <ion-icon class="text-white ion-icon " name="logo-snapchat"></ion-icon>
+
+                  </ion-col>
+            </ion-row>
+
+            <ion-row class="d-flex justify-content-center">
+                  <ion-button type="submit" class="p-1" [routerLink]="['/fqa']"> FQA </ion-button>
+            </ion-row>
+
+      </ion-col>
 </ion-content>
-
-<ion-footer class="position-static">
-  <ion-toolbar class="mobile-background--color">
-    <ion-row>
-      <ion-col>
-        <ion-button color="primary" expand="full" color="primary" (click)="login()">Login</ion-button>
-      </ion-col>
-      <ion-col>
-        <ion-button color="primary" expand="full" color="danger" (click)="register()">Register</ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-toolbar>
-</ion-footer>

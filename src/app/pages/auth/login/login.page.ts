@@ -5,6 +5,9 @@ import { CommonService } from '../../../services/common.service';
 import { ModalController, ToastController, NavController, AlertController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from '../../../services/storage.service';
+import { CometChat } from "@cometchat-pro/chat"
+import { CometChatService } from '../../../services/comet-chat.service';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -23,8 +26,10 @@ export class LoginPage implements OnInit {
     public apiService: ApiService,
     public commonService: CommonService,
     public storageService: StorageService,
+    public cometChatService: CometChatService
   ) {
-   }
+
+  }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -32,8 +37,6 @@ export class LoginPage implements OnInit {
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
-
- 
 
   numberValidation() {
     this.validNumber = this.commonService.numberValid(this.loginForm.get('number').value);
@@ -49,34 +52,45 @@ export class LoginPage implements OnInit {
 
   checkUser(userDetails) {
     this.commonService.presentLoading('User login...');
-        this.apiService.find( { number: this.loginForm.get('number').value }, 'user').subscribe(res => {
+    this.apiService.find({ number: this.loginForm.get('number').value }, 'user').subscribe(res => {
 
-        if (res.length !== 0) {
+      if (res.length !== 0) {
 
-          if (res[0]['password'] === userDetails.value.password) {
+        if (res[0]['password'] === userDetails.value.password) {
 
-            this.apiService.updateData('user', res[0]['_id'], { 'loggedIn': true }).subscribe(res => {
-            this.dismissLogin();
-            this.commonService.dismissLoading();
-            this.storageService.addItem('userDetails', JSON.stringify(res));
-            this.navCtrl.navigateRoot('/dashboard');
+          this.apiService.updateData('user', res[0]['_id'], { 'loggedIn': true }).subscribe(updateUser => {
+
+            this.cometChatService.login(this.loginForm.get('number').value).subscribe(result => {
+
+              console.log("Login Successful:");
+              this.storageService.addItem('userDetails', JSON.stringify(updateUser));
+              this.dismissLogin();
+              this.commonService.dismissLoading();
+              this.navCtrl.navigateRoot('/dashboard');
+
+            }, error => {
+              this.commonService.dismissLoading();
+              this.commonService.presentToast('Invalid password');
             });
-            
-          } else {
-            this.commonService.dismissLoading();
-            this.commonService.presentToast('Invalid password');
-          }
-          
+
+          });
+
         } else {
-          this.conformationRegistor('User is not registered Please registor first');
+          this.commonService.dismissLoading();
+          this.commonService.presentToast('Invalid password');
         }
 
+      } else {
         this.commonService.dismissLoading();
-      },
-        error => {
-          this.commonService.dismissLoading();
-          this.commonService.presentToast('Registration Failed please try again after some time!!!');
-        })
+
+        this.conformationRegistor('User is not registered Please registor first');
+      }
+
+    },
+      error => {
+        this.commonService.dismissLoading();
+        this.commonService.presentToast('Registration Failed please try again after some time!!!');
+      })
   }
 
   async conformationRegistor(message) {

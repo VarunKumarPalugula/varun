@@ -1,0 +1,36 @@
+.figure {
+    margin: 12px;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  
+  .figure:hover {
+    border: 1px solid rgba(255,255,255,1) !important;
+    box-shadow: 0px 1px 4px 0px #888888;
+  }
+  
+  .figure-caption {
+    text-align: center;
+    font-weight: bold;
+  }
+  .figure-caption {
+    font-size: 100% !important;
+  }
+
+  .card {
+    border: 0px;
+  }
+
+  .img-fluid {
+    width: 144px;
+  }
+
+  .figure-caption {
+    text-align: center;
+    font-weight: bold;
+  }
+  .figure-caption {
+    font-size: 100% !important;
+  }
+  

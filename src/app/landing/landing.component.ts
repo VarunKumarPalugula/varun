@@ -21,13 +21,6 @@ export class LandingComponent implements OnInit {
   ) { }
 
   ionViewWillEnter() {
-    this.commonService.getToken().then(res => {
-      if (res) {
-        
-      } else {
-        this.navCtrl.navigateRoot('/dashboard');
-      }
-    })
   }
 
   ngOnInit() { }
